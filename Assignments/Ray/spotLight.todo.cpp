@@ -58,8 +58,10 @@ bool SpotLight::isInShadow( const RayShapeIntersectionInfo& iInfo , const Shape*
 	//////////////////////////////////////////////
 	// Determine if the light is in shadow here //
 	//////////////////////////////////////////////
+	RayShapeIntersectionInfo temp; //mac
+
 	return shape->intersect(Ray3D(iInfo.position, (this->_location - iInfo.position).unit())
-		, RayShapeIntersectionInfo(), BoundingBox1D(), std::function<bool(double)>()) == INFINITY ? 1 : 0;
+		, temp, BoundingBox1D(), std::function<bool(double)>()) == INFINITY ? 1 : 0;
 }
 
 Point3D SpotLight::transparency( const RayShapeIntersectionInfo &iInfo , const Shape &shape , Point3D cLimit ) const

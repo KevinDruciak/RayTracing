@@ -44,8 +44,9 @@ bool DirectionalLight::isInShadow( const RayShapeIntersectionInfo& iInfo , const
 	//////////////////////////////////////////////
 	// Determine if the light is in shadow here //
 	//////////////////////////////////////////////
+	RayShapeIntersectionInfo temp; //mac
 	return shape->intersect(Ray3D(iInfo.position + -this->_direction * 0.0000000001, -this->_direction)
-		, RayShapeIntersectionInfo(), BoundingBox1D(), std::function<bool(double)>()) == INFINITY ? 1 : 0;
+		, temp, BoundingBox1D(), std::function<bool(double)>()) == INFINITY ? 1 : 0;
 }
 
 Point3D DirectionalLight::transparency( const RayShapeIntersectionInfo &iInfo , const Shape &shape , Point3D cLimit ) const
