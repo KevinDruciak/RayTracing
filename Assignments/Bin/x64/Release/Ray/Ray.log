@@ -1,0 +1,33 @@
+﻿  box.cpp
+  box.todo.cpp
+  camera.cpp
+  camera.todo.cpp
+  cone.cpp
+  cone.todo.cpp
+  cylinder.cpp
+  cylinder.todo.cpp
+  directionalLight.cpp
+  directionalLight.todo.cpp
+  fileInstance.cpp
+  GLSLProgram.cpp
+  mouse.cpp
+  pointLight.cpp
+  pointLight.todo.cpp
+  scene.cpp
+  scene.todo.cpp
+  shape.cpp
+  shapeList.cpp
+  shapeList.todo.cpp
+  Generating Code...
+  Compiling...
+  sphere.cpp
+  sphere.todo.cpp
+  spotLight.cpp
+  spotLight.todo.cpp
+  torus.cpp
+  torus.todo.cpp
+  triangle.cpp
+  triangle.todo.cpp
+  window.cpp
+  Generating Code...
+  Ray.vcxproj -> C:\Users\bakad\Desktop\CG2\Assignments\.\Ray.lib
