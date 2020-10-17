@@ -83,7 +83,7 @@ int main( int argc , char *argv[] )
 {
 	CmdLineParse( argc-1 , argv+1 , params );
 	if( !InputRayFile.set ){ ShowUsage( argv[0] ) ; return EXIT_FAILURE; }
-
+	std::cout << InputRayFile.value << std::endl;
 	Scene::BaseDir = GetFileDirectory( InputRayFile.value );
 	Scene scene;
 	try

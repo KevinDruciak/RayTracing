@@ -1,7 +1,1 @@
-﻿  geometry.cpp
-  geometry.todo.cpp
-  interpolation.cpp
-  poly34.cpp
-c:\users\bakad\desktop\cg2\assignments\util\poly34.cpp(176): warning C4101: 't': unreferenced local variable
-  Generating Code...
-  Util.vcxproj -> C:\Users\bakad\Desktop\CG2\Assignments\.\Util.lib
+﻿  Util.vcxproj -> C:\Users\bakad\Desktop\CG2\Assignments\.\Util.lib
