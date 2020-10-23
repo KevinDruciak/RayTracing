@@ -170,7 +170,6 @@ namespace Ray
 		/** This static method returns the directive header describing the shape. */
 		static std::string _DirectiveHeader( void ){ return "shape_list"; }
 	public:
-
 		/** The set of shape factoendDirectiveries */
 		static std::unordered_map< std::string , Util::BaseFactory< Shape > * > ShapeFactories;
 

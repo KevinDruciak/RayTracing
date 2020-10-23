@@ -10,6 +10,8 @@
 #include "keyFrames.h"
 #include "camera.h"
 
+#define EPSILON 0.000001
+
 namespace Ray
 {
 	class Material;

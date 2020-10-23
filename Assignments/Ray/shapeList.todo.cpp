@@ -46,11 +46,56 @@ double ShapeList::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bound
 	for (auto* shape : this->shapes)
 	{
 		auto temp = RayShapeIntersectionInfo();
-		auto time = shape->intersect(ray, temp, range, validityLambda);
-		minimum = std::min(time, minimum);
-		if (time == minimum) iInfo = temp;
+		auto dist = shape->intersect(ray, temp, range, validityLambda);
+		minimum = std::min(dist, minimum);
+		if (dist == minimum) iInfo = temp;
 	}
 	return minimum;
+
+
+	//TODO: acceleration
+
+	//Ray3D rayPrime = Ray3D(this->getInverseMatrix().multPosition(ray.position), (this->getInverseMatrix().multDirection(ray.direction)).unit());
+	//loop through shapes
+	
+	
+	/*std::vector<ShapeBoundingBoxHit> *hits;
+
+	for (auto* shape : this->shapes) {
+		BoundingBox1D temp;
+		if (!shape->boundingBox().isEmpty()) {
+			temp = shape->boundingBox().intersect(ray);
+		} else {
+			continue;
+		}
+		//double dist1 = (temp[1] - temp[0]).length();
+			std::cout << "got here 1" << std::endl;
+
+		double dist1 = Point1D::Distance(temp[1], temp[0]);
+					std::cout << "got here 2" << std::endl;
+
+		if ((dist1 >= 0) && (dist1 != INFINITY)) {
+			ShapeBoundingBoxHit temp;
+			temp.shape = shape;
+			temp.t = dist1;
+			hits->push_back(temp);
+		}
+	}
+		std::cout << "got here 3" << std::endl;
+
+
+	std::sort(hits->begin(), hits->end(), ShapeBoundingBoxHit::Compare);
+	//qsort(hits->begin(), totShapeHit, sizeof(ShapeBoundingBoxHit), ShapeBoundingBoxHit::Compare);
+	std::cout << "got here 4" << std::endl;
+	double minimum = INFINITY;
+
+	for (auto hit : *hits) {
+		auto temp = RayShapeIntersectionInfo();
+		auto dist = hit.shape->intersect(ray, temp, range, validityLambda);
+		minimum = std::min(dist, minimum);
+		if (dist == minimum) iInfo = temp;
+	}
+	return minimum;*/
 }
 
 bool ShapeList::isInside( Point3D p ) const
@@ -71,6 +116,10 @@ void ShapeList::init( const LocalSceneData &data )
 	// Do any additional set-up here //
 	///////////////////////////////////
 	//WARN_ONCE( "method undefined" );
+	//hits->clear();
+	//hits->shrink_to_fit();
+	//hits->reserve(shapes.size());
+	//hits->clear();
 }
 
 void ShapeList::updateBoundingBox( void )
@@ -78,7 +127,11 @@ void ShapeList::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-	//THROW( "method undefined" );
+	BoundingBox3D min;
+	for (auto shape : shapes) {
+		min += shape->boundingBox();
+	}
+	this->_bBox = min;
 }
 
 void ShapeList::initOpenGL( void )
@@ -111,37 +164,28 @@ double AffineShape::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bou
 	//////////////////////////////////////////////////////////////////////////////////////
 	// Compute the intersection of the difference with the affinely deformed shape here //
 	//////////////////////////////////////////////////////////////////////////////////////
-	//TODO:: clean up
-	double result = INFINITY;
+
+	//double result = INFINITY;
 	RayShapeIntersectionInfo temp;
 
-	Ray3D ray_local = this->getInverseMatrix() * ray;
+	Ray3D local = this->getInverseMatrix() * ray;
 
-	double dist_ratio = ray.direction.length() / ray_local.direction.length();
-	//double mx_local = mx < 0 ? -1 : mx / dist_ratio;
+	double ratio = ray.direction.length() / local.direction.length();
 
-	ray_local.direction = ray_local.direction.unit();
+	local.direction = local.direction.unit();
 
-	//for (int i = 0; i < sNum; i++) {
-		// Convert local distance to world distance
-	double rayDist = _shape->intersect(ray_local, temp, BoundingBox1D(), std::function< bool(double) >()) * dist_ratio;
-	if (rayDist >= 0 && !(rayDist == INFINITY))
-	{
-		result = rayDist;
-	}
-	//if (rayDist > 0 && (rayDist < mx || mx <= 0) && (rayDist < result || result == -1)) {
-	//	result = rayDist;
-	//if (rayDist > 0)
+	double distance = _shape->intersect(local, temp, BoundingBox1D(), std::function< bool(double) >()) * ratio;
+	//if (rayDist >= 0 && !(rayDist == INFINITY))
 	//{
-		//result = rayDist;
+	//	result = rayDist;
 	//}
+
 	iInfo.position = this->getMatrix() * temp.position;
 	iInfo.material = temp.material;
 	iInfo.normal = (this->getNormalMatrix() * temp.normal).unit();
-	//iInfo.texCoordinate = tempInfo.texCoordinate;
-//}
+	iInfo.texture = temp.texture;
 
-	return rayDist;
+	return distance;
 }
 
 bool AffineShape::isInside( Point3D p ) const
@@ -158,8 +202,8 @@ void AffineShape::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-	THROW( "method undefined" );
-	_shape->updateBoundingBox();
+	//TODO: acceleration
+	//this->_bBox = this->getMatrix() * _shape->boundingBox();
 }
 
 void AffineShape::drawOpenGL( GLSLProgram * glslProgram ) const
@@ -188,6 +232,8 @@ double TriangleList::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bo
 		iInfo.material = this->_material;
 		iInfo.normal = temp.normal;
 		iInfo.position = temp.position;
+		iInfo.texture = temp.texture;
+
 	}
 	return intersection;
 }
@@ -281,6 +327,7 @@ double Intersection::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bo
 	// Compute the intersection of the difference with the intersection of shapes here //
 	/////////////////////////////////////////////////////////////////////////////////////
 	THROW( "method undefined" );
+	return -1;
 }
 
 void Intersection::init( const LocalSceneData &data )

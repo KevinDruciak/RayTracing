@@ -35,7 +35,37 @@ void Triangle::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-	THROW( "method undefined" );
+		//TODO: acceleration
+
+	double xmax = -10000;
+	double ymax = -10000;
+	double zmax = -10000;
+	double xmin = 10000;
+	double ymin = 10000;
+	double zmin = 10000;
+	for (int i = 0; i < 3; i++) {
+		if (xmax < this->_v[i]->position[0]) {
+			xmax = this->_v[i]->position[0];
+		}
+		if (ymax < this->_v[i]->position[1]) {
+			ymax = this->_v[i]->position[1];
+		}
+		if (zmax < this->_v[i]->position[2]) {
+			zmax = this->_v[i]->position[2];
+		}
+		if (xmin > this->_v[i]->position[0]) {
+			xmin = this->_v[i]->position[0];
+		}
+		if (ymin > this->_v[i]->position[1]) {
+			ymin = this->_v[i]->position[1];
+		}
+		if (zmin > this->_v[i]->position[2]) {
+			zmin = this->_v[i]->position[2];
+		}
+	}
+	this->_bBox[0] = Point3D(xmin, ymin, zmin);
+	this->_bBox[1] = Point3D(xmax, ymax, zmax);
+	//return bBox;
 }
 void Triangle::initOpenGL( void )
 {
@@ -55,6 +85,7 @@ double Triangle::intersect( Ray3D ray , RayShapeIntersectionInfo& iInfo , Boundi
 	/////////////////////////////////////////////////////////////
 	// Compute the intersection of the shape with the ray here //
 	/////////////////////////////////////////////////////////////
+	
 	const double distance = (-plane.distance - plane.normal.dot(ray.position)) / plane.normal.dot(ray.direction);
 	if (distance < 0) return INFINITY;
 
@@ -80,10 +111,12 @@ double Triangle::intersect( Ray3D ray , RayShapeIntersectionInfo& iInfo , Boundi
 		return INFINITY;
 	iInfo.position = ray(distance);
 	iInfo.normal = this->plane.normal;
-	//iInfo.texCoordinate =
-	//this->_v[0]->texCoordinate * alpha + this->_v[1]->texCoordinate * beta + this->_v[2]->texCoordinate * gamma;
+	iInfo.texture = this->_v[0]->texCoordinate * alpha + this->_v[1]->texCoordinate * beta + this->_v[2]->texCoordinate * gamma;
+	//std::cout << "Triangle: " << iInfo.texture[0] << " " << iInfo.texture[1] << std::endl;
+
 	return distance;
-}
+
+} 
 
 void Triangle::drawOpenGL( GLSLProgram * glslProgram ) const
 {

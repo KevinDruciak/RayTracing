@@ -50,6 +50,7 @@ namespace Ray
 		/** The vertices associated with the triangle */
 		const class Vertex* _v[3];
 
+
 	public:
 		/** This static method returns the directive describing the shape. */
 		static std::string Directive( void ){ return "shape_triangle"; }
