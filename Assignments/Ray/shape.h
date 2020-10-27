@@ -6,6 +6,8 @@
 #include <functional>
 #include <Util/geometry.h>
 #include <Util/factory.h>
+
+#define GL_SILENCE_DEPRECATION
 #include <GL/glew.h>
 #pragma warning( disable : 4290 )
 #ifdef __APPLE__

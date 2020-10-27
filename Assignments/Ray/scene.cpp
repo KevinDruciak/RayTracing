@@ -4,6 +4,7 @@
 #include <Util/exceptions.h>
 #include <Util/cmdLineParser.h>
 #include <Image/bmp.h>
+#include <random>
 #include "scene.h"
 #include "fileInstance.h"
 #include "shapeList.h"
@@ -497,20 +498,44 @@ void Scene::drawOpenGL( void ) const
 	ASSERT_OPEN_GL_STATE();	
 }
 
-Image32 Scene::rayTrace( int width , int height , int rLimit , double cLimit )
+int clamp(double val, int max) {
+	return val > max - 1 ? max : val < 0 ? 0 : (int)val;
+}
+
+Image32 Scene::rayTrace( int width , int height , int rLimit , double cLimit, int samples, double radius)
 {
 	updateBoundingBox();
 	Image32 img;
 
 	img.setSize( width , height );
-	for( int j=0 ; j<height ; j++ )
-	{
-		for( int i=0 ; i<width ; i++ )
-		{
-			try
-			{
+	if (samples > 1) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<> distr(-0.5, 0.5);
+		for( int j=0 ; j<height ; j++ )	{
+			for( int i=0 ; i<width ; i++ ) {
+				try {
+					Point3D c;
+					for( int n=0 ; n<samples ; n++) {
+						Ray3D ray = _globalData.camera.getRayJitter( clamp((double)i + distr(gen), width), clamp((double)(height-j-1) + distr(gen), height), width , height );
+						c += getColor( ray , rLimit , Point3D( cLimit , cLimit , cLimit ) , radius);
+					}
+					Pixel32 p;
+					p.r = (int)(c[0]*255.0 / samples);
+					p.g = (int)(c[1]*255.0 / samples);
+					p.b = (int)(c[2]*255.0 / samples);
+					img(i,j) = p;
+				}
+				catch( std::exception &e ){ ERROR_OUT( "failed to generate pixel ( %d , %d )\n%s" , i , j , e.what() ); }
+			}
+		}
+		return img;
+	} 
+	for( int j=0 ; j<height ; j++ )	{
+		for( int i=0 ; i<width ; i++ ) {
+			try {
 				Ray3D ray = _globalData.camera.getRay( i , height-j-1 , width , height );
-				Point3D c = getColor( ray , rLimit , Point3D( cLimit , cLimit , cLimit ) );
+				Point3D c = getColor( ray , rLimit , Point3D( cLimit , cLimit , cLimit ) , radius);
 				Pixel32 p;
 				p.r = (int)(c[0]*255);
 				p.g = (int)(c[1]*255);

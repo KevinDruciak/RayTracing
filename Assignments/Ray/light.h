@@ -48,7 +48,7 @@ namespace Ray
 		/** This method tests if the intersection point represented by iInfo is in partial shadow from the light source.
 		*** A ray is cast from the hit location to the light source, and the transparency values are accumulated.
 		*** If the transparency value falls below cLimit, the testing terminates. */
-		virtual Util::Point3D transparency( const class RayShapeIntersectionInfo &iInfo , const class Shape &shape , Util::Point3D cLimit ) const=0;
+		virtual Util::Point3D transparency( const class RayShapeIntersectionInfo &iInfo , const class Shape &shape , Util::Point3D cLimit , double radius) const=0;
 
 		/** This method calls the necessary OpenGL commands to render the light.
 		*** The index argument specifices the index of the light that is to be drawn. */

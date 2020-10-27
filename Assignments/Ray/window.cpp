@@ -301,11 +301,15 @@ void Window::MainMenu( int entry )
 		string fileName;
 		int recursionDepth;
 		double cutOff;
+		int jitter;
+		double radius;
 		RayTracingStats::Reset();
 		cout << "File name: " ; cin >> fileName;
 		cout << "Recursion depth: " ; cin >> recursionDepth;
 		cout << "Cut off: " ; cin >> cutOff;
-		Image32 img = scene->rayTrace( _width , _height , recursionDepth , cutOff );
+		cout << "Samples: " ; cin >> jitter;
+		cout << "Soft Shadow Radius: " ; cin >> radius;
+		Image32 img = scene->rayTrace( _width , _height , recursionDepth , cutOff , jitter, radius);
 		img.write( fileName );
 		break;
 	}

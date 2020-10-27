@@ -37,7 +37,7 @@ void Cone::initOpenGL( void )
 	/////////////////////////////////////////
 	// Do any necessary OpenGL set-up here //
 	/////////////////////////////////////////
-	WARN_ONCE( "method undefined" );
+	//WARN_ONCE( "method undefined" );
 
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
@@ -51,7 +51,7 @@ double Cone::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , BoundingBo
 	// Compute the intersection of the shape with the ray here //
 	/////////////////////////////////////////////////////////////
 	THROW( "method undefined" );
-	return Infinity;
+	return INFINITY;
 }
 
 bool Cone::isInside( Point3D p ) const

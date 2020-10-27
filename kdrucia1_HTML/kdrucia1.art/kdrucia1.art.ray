@@ -1,0 +1,90 @@
+#camera  0 7 10  0 -0.5 -0.707107  0 0.707107 -0.5  0.35
+#light_dir  0.5 0.5 0.5  1 1 1  1 1 1  0.707107 -0.707107 0.000001
+#light_spot  0.5 0.5 0.5  1 1 1  1 1 1  0 12 0  0 -1 0  1 0 0.001  0.15 64
+#light_point  0.5 0.5 0.5  1 1 1  1 1 1  10 0 10  1 0 0.001
+
+#ray_file  _sphere.ray
+#ray_file  _board2.ray
+#ray_file  _mars.ray
+#ray_file  _mercury.ray
+#ray_file  _venus.ray
+#ray_file  _earth.ray
+#ray_file  _moon.ray
+#ray_file  _jupiter.ray
+#ray_file  _neptune.ray
+#ray_file  _saturn.ray
+#ray_file  _uranus.ray
+
+
+#static_affine 0.5 0 0.86602540378 0 0 1 0 0 -0.86602540378 0 0.5 0 0 0 0 1
+    #shape_list_begin
+        #ray_file_instance 1
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 1.75 1
+            #ray_file_instance 2
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 1.25 1
+            #ray_file_instance 3
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 0.75 1
+            #ray_file_instance 4
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 0.25 1
+            #ray_file_instance 5
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 -0.25 1
+            #ray_file_instance 6
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 -0.75 1
+            #ray_file_instance 7
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 -1.25 1
+            #ray_file_instance 8
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.75 0.5 -1.75 1
+            #ray_file_instance 9
+            
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 1.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 1.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 0.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 0.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 -0.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 -0.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 -1.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 1.25 0.5 -1.75 1
+            #ray_file_instance 10
+            
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 1.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 1.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 0.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 0.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 -0.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 -0.75 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 -1.25 1
+            #ray_file_instance 10
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.25 0.5 -1.75 1
+            #ray_file_instance 10
+            
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 1.75 1
+            #ray_file_instance 9
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 1.25 1
+            #ray_file_instance 8
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 0.75 1
+            #ray_file_instance 7
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 0.25 1
+            #ray_file_instance 6
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 -0.25 1
+            #ray_file_instance 5
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 -0.75 1
+            #ray_file_instance 4
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 -1.25 1
+            #ray_file_instance 3
+        #static_affine  0.175 0 0 0 0 0.175 0 0 0 0 0.175 0 -1.75 0.5 -1.75 1
+            #ray_file_instance 2
+    #shape_list_end
+

@@ -54,18 +54,38 @@ bool PointLight::isInShadow( const RayShapeIntersectionInfo& iInfo , const Shape
 	return shape->intersect(Ray3D(iInfo.position + L * EPSILON, L), temp, BoundingBox1D(), std::function<bool(double)>()) == INFINITY ? true : false;
 }
 
-Point3D PointLight::transparency( const RayShapeIntersectionInfo &iInfo , const Shape &shape , Point3D cLimit ) const
+Point3D PointLight::softShadow( const RayShapeIntersectionInfo &iInfo , const Shape &shape , Point3D cLimit, int x, int z) const
+{
+	Point3D one; one[0] = 1; one[1] = 1; one[2] = 1;
+	Point3D translate; translate[0] = x / 10.0; translate[1] = 0; translate[2] = z / 10.0;
+	RayShapeIntersectionInfo temp;
+	Point3D L = (this->_location + translate - iInfo.position);
+	if (shape.intersect(Ray3D(iInfo.position + L.unit() * EPSILON, L.unit()), temp, BoundingBox1D(), std::function<bool(double)>()) == INFINITY) return one;
+	return temp.normal.dot(-L) <= 0 ? one : temp.material->transparent * softShadow(temp, shape, cLimit, x, z);
+}
+
+Point3D PointLight::transparency( const RayShapeIntersectionInfo &iInfo , const Shape &shape , Point3D cLimit, double radius) const
 {
 	//////////////////////////////////////////////////////////
 	// Compute the transparency along the path to the light //
 	//////////////////////////////////////////////////////////
-	//apple
-	Point3D one; one[0] = 1; one[1] = 1; one[2] = 1;
-	RayShapeIntersectionInfo temp;
-
-	Point3D L = (this->_location - iInfo.position);
-	if (shape.intersect(Ray3D(iInfo.position + L.unit() * EPSILON, L.unit()), temp, BoundingBox1D(), std::function<bool(double)>()) == INFINITY) return one;
-	return temp.normal.dot(-L) <= 0 ? one : temp.material->transparent * transparency(temp, shape, cLimit);
+	if (radius <= 0) {
+		RayShapeIntersectionInfo temp = iInfo;
+		return softShadow(temp, shape, cLimit, 0, 0);
+	} else { 
+		double rsquared = radius * radius;
+		Point3D one; one[0] = 1.0; one[1] = 1.0; one[2] = 1.0;
+		Point3D div;
+		Point3D val;
+		for (int i = -radius; i < radius; i++) {
+			for (int j = -radius; j < radius; j++) {
+				RayShapeIntersectionInfo temp = iInfo;
+				val += softShadow(temp, shape, cLimit, i, j);
+				div += one;
+			}
+		}
+		return val / div;
+	}
 }
 
 void PointLight::drawOpenGL( int index , GLSLProgram * glslProgram ) const

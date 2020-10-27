@@ -15,15 +15,29 @@ Ray3D Camera::getRay( int i , int j , int width , int height ) const
 	/////////////////////////////////////////////////
 	// Get the ray through the (i,j)-th pixel here //
 	/////////////////////////////////////////////////
-	Ray3D ray;
-	ray.position = this->position;
+	double angle = tan(this->heightAngle / 2.0);
+	double ar = static_cast<double>(width) / static_cast<double>(height);
 
-	const double aspectRatio = static_cast<double>(height) / static_cast<double>(width);
-	const double angle = tan(this->heightAngle / 2.0);
-	const double x = (2.0 * ((static_cast<double>(i) + 0.5) / static_cast<double>(width)) - 1.0) * aspectRatio * angle;
-	const double y = (2.0 * ((static_cast<double>(j) + 0.5) / static_cast<double>(height)) - 1.0) * angle;
-	ray.direction = (forward + up * y + right * x).unit();
-	return ray;
+	Point3D x = 2.0 * (this->right) * (i + 0.5) / width * ar * angle;
+	Point3D y = 2.0 * (this->up) * (j + 0.5) / height * angle;
+
+	Point3D dir = (this->forward - angle * (this->up + this->right * ar) + x + y).unit();
+	return Ray3D(this->position, dir);
+}
+
+Ray3D Camera::getRayJitter( double i , double j , int width , int height ) const
+{
+	/////////////////////////////////////////////////
+	// Get the ray through the (i,j)-th pixel here //
+	/////////////////////////////////////////////////
+	double angle = tan(this->heightAngle / 2.0);
+	double ar = static_cast<double>(width) / static_cast<double>(height);
+
+	Point3D x = 2.0 * (this->right) * (i + 0.5) / width * ar * angle;
+	Point3D y = 2.0 * (this->up) * (j + 0.5) / height * angle;
+
+	Point3D dir = (this->forward - angle * (this->up + this->right * ar) + x + y).unit();
+	return Ray3D(this->position, dir);
 }
 
 void Camera::drawOpenGL( void ) const

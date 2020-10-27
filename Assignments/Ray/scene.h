@@ -160,10 +160,10 @@ namespace Ray
 		/** This is the function responsible for the recursive ray-tracing returning the color obtained
 		*** by shooting a ray into the scene and recursing until either the recursion depth has been reached
 		*** or the contribution from subsequent bounces is guaranteed to be less than the cut-off. */
-		Util::Point3D getColor( Util::Ray3D ray , int rDepth , Util::Point3D cLimit );
+		Util::Point3D getColor( Util::Ray3D ray , int rDepth , Util::Point3D cLimit, double radius );
 
 		/** This method ray-traces the scene and returns the computed image */
-		Image::Image32 rayTrace( int width , int height , int rLimit , double cLimit );
+		Image::Image32 rayTrace( int width , int height , int rLimit , double cLimit, int samples, double radius );
 
 		/** This method should be called (once) after an OpenGL context has been created */
 		void initOpenGL( void );

@@ -35,7 +35,8 @@ namespace Ray
 		Util::Point3D getDiffuse ( Util::Ray3D ray , const class RayShapeIntersectionInfo& iInfo ) const;
 		Util::Point3D getSpecular( Util::Ray3D ray , const class RayShapeIntersectionInfo& iInfo ) const;
 		bool isInShadow( const class RayShapeIntersectionInfo& iInfo , const class Shape* shape ) const;
-		Util::Point3D transparency( const class RayShapeIntersectionInfo &iInfo , const class Shape &shape , Util::Point3D cLimit ) const;
+		Util::Point3D transparency( const class RayShapeIntersectionInfo &iInfo , const class Shape &shape , Util::Point3D cLimit, double radius) const;
+		Util::Point3D softShadow( const class RayShapeIntersectionInfo &iInfo , const class Shape &shape , Util::Point3D cLimit , int x, int z ) const;
 		void drawOpenGL( int index , GLSLProgram *glslProgram ) const;
 	};
 }

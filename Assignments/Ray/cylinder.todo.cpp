@@ -50,7 +50,7 @@ double Cylinder::intersect( Ray3D ray , RayShapeIntersectionInfo& iInfo , Boundi
 	// Compute the intersection of the shape with the ray here //
 	/////////////////////////////////////////////////////////////
 	THROW( "method undefined" );
-	return Infinity;
+	return INFINITY;
 }
 
 bool Cylinder::isInside( Point3D p ) const

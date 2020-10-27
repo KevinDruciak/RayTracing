@@ -35,38 +35,18 @@ void Triangle::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-		//TODO: acceleration
+	double xmax = _v[0]->position[0] > _v[1]->position[0] ? (_v[0]->position[0] > _v[2]->position[0] ? _v[0]->position[0] : _v[2]->position[0]) : (_v[1]->position[0] > _v[2]->position[0] ? _v[1]->position[0] : _v[2]->position[0]);
+	double ymax = _v[0]->position[1] > _v[1]->position[1] ? (_v[0]->position[1] > _v[2]->position[1] ? _v[0]->position[1] : _v[2]->position[1]) : (_v[1]->position[1] > _v[2]->position[1] ? _v[1]->position[1] : _v[2]->position[1]);
+	double zmax = _v[0]->position[2] > _v[1]->position[2] ? (_v[0]->position[2] > _v[2]->position[2] ? _v[0]->position[2] : _v[2]->position[2]) : (_v[1]->position[2] > _v[2]->position[2] ? _v[1]->position[2] : _v[2]->position[2]);
+	
+	double xmin = _v[0]->position[0] < _v[1]->position[0] ? (_v[0]->position[0] < _v[2]->position[0] ? _v[0]->position[0] : _v[2]->position[0]) : (_v[1]->position[0] < _v[2]->position[0] ? _v[1]->position[0] : _v[2]->position[0]);
+	double ymin = _v[0]->position[1] < _v[1]->position[1] ? (_v[0]->position[1] < _v[2]->position[1] ? _v[0]->position[1] : _v[2]->position[1]) : (_v[1]->position[1] < _v[2]->position[1] ? _v[1]->position[1] : _v[2]->position[1]);
+	double zmin = _v[0]->position[2] < _v[1]->position[2] ? (_v[0]->position[2] < _v[2]->position[2] ? _v[0]->position[2] : _v[2]->position[2]) : (_v[1]->position[2] < _v[2]->position[2] ? _v[1]->position[2] : _v[2]->position[2]);
 
-	double xmax = -10000;
-	double ymax = -10000;
-	double zmax = -10000;
-	double xmin = 10000;
-	double ymin = 10000;
-	double zmin = 10000;
-	for (int i = 0; i < 3; i++) {
-		if (xmax < this->_v[i]->position[0]) {
-			xmax = this->_v[i]->position[0];
-		}
-		if (ymax < this->_v[i]->position[1]) {
-			ymax = this->_v[i]->position[1];
-		}
-		if (zmax < this->_v[i]->position[2]) {
-			zmax = this->_v[i]->position[2];
-		}
-		if (xmin > this->_v[i]->position[0]) {
-			xmin = this->_v[i]->position[0];
-		}
-		if (ymin > this->_v[i]->position[1]) {
-			ymin = this->_v[i]->position[1];
-		}
-		if (zmin > this->_v[i]->position[2]) {
-			zmin = this->_v[i]->position[2];
-		}
-	}
-	this->_bBox[0] = Point3D(xmin, ymin, zmin);
-	this->_bBox[1] = Point3D(xmax, ymax, zmax);
-	//return bBox;
+	this->_bBox[0] = Point3D(xmin - EPSILON, ymin - EPSILON, zmin - EPSILON);
+	this->_bBox[1] = Point3D(xmax + EPSILON, ymax + EPSILON, zmax + EPSILON);
 }
+
 void Triangle::initOpenGL( void )
 {
 	///////////////////////////
@@ -107,15 +87,11 @@ double Triangle::intersect( Ray3D ray , RayShapeIntersectionInfo& iInfo , Boundi
 	}
 	const double alpha = 1 - (gamma + beta);
 
-	if (alpha < 0 || alpha > 1 || beta < 0 || beta > 1 || gamma < 0 || gamma > 1)
-		return INFINITY;
+	if (alpha < 0 || alpha > 1 || beta < 0 || beta > 1 || gamma < 0 || gamma > 1) return INFINITY;
 	iInfo.position = ray(distance);
 	iInfo.normal = this->plane.normal;
 	iInfo.texture = this->_v[0]->texCoordinate * alpha + this->_v[1]->texCoordinate * beta + this->_v[2]->texCoordinate * gamma;
-	//std::cout << "Triangle: " << iInfo.texture[0] << " " << iInfo.texture[1] << std::endl;
-
 	return distance;
-
 } 
 
 void Triangle::drawOpenGL( GLSLProgram * glslProgram ) const

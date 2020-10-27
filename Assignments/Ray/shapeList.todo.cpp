@@ -42,60 +42,26 @@ double ShapeList::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bound
 	//////////////////////////////////////////////////////////////////
 	// Compute the intersection of the shape list with the ray here //
 	//////////////////////////////////////////////////////////////////
-	double minimum = INFINITY;
-	for (auto* shape : this->shapes)
-	{
-		auto temp = RayShapeIntersectionInfo();
-		auto dist = shape->intersect(ray, temp, range, validityLambda);
-		minimum = std::min(dist, minimum);
-		if (dist == minimum) iInfo = temp;
+	
+	double distance = INFINITY;
+	RayShapeIntersectionInfo info;
+	std::vector<ShapeBoundingBoxHit> hits;
+
+	for (auto shape : this->shapes) {
+		BoundingBox1D bound = shape->boundingBox().intersect(ray);
+		if (bound.isEmpty()) continue;
+		hits.push_back(ShapeBoundingBoxHit{bound[0][0], shape});
 	}
-	return minimum;
-
-
-	//TODO: acceleration
-
-	//Ray3D rayPrime = Ray3D(this->getInverseMatrix().multPosition(ray.position), (this->getInverseMatrix().multDirection(ray.direction)).unit());
-	//loop through shapes
-	
-	
-	/*std::vector<ShapeBoundingBoxHit> *hits;
-
-	for (auto* shape : this->shapes) {
-		BoundingBox1D temp;
-		if (!shape->boundingBox().isEmpty()) {
-			temp = shape->boundingBox().intersect(ray);
-		} else {
-			continue;
-		}
-		//double dist1 = (temp[1] - temp[0]).length();
-			std::cout << "got here 1" << std::endl;
-
-		double dist1 = Point1D::Distance(temp[1], temp[0]);
-					std::cout << "got here 2" << std::endl;
-
-		if ((dist1 >= 0) && (dist1 != INFINITY)) {
-			ShapeBoundingBoxHit temp;
-			temp.shape = shape;
-			temp.t = dist1;
-			hits->push_back(temp);
+	std::sort(hits.begin(), hits.end(), ShapeBoundingBoxHit::Compare);
+	for (auto hit : hits) {
+		double t = hit.shape->intersect(ray, info, range, validityLambda);
+		if (t < distance) {
+			distance = t;
+			iInfo = info;
+			break;
 		}
 	}
-		std::cout << "got here 3" << std::endl;
-
-
-	std::sort(hits->begin(), hits->end(), ShapeBoundingBoxHit::Compare);
-	//qsort(hits->begin(), totShapeHit, sizeof(ShapeBoundingBoxHit), ShapeBoundingBoxHit::Compare);
-	std::cout << "got here 4" << std::endl;
-	double minimum = INFINITY;
-
-	for (auto hit : *hits) {
-		auto temp = RayShapeIntersectionInfo();
-		auto dist = hit.shape->intersect(ray, temp, range, validityLambda);
-		minimum = std::min(dist, minimum);
-		if (dist == minimum) iInfo = temp;
-	}
-	return minimum;*/
+	return distance;
 }
 
 bool ShapeList::isInside( Point3D p ) const
@@ -115,11 +81,6 @@ void ShapeList::init( const LocalSceneData &data )
 	///////////////////////////////////
 	// Do any additional set-up here //
 	///////////////////////////////////
-	//WARN_ONCE( "method undefined" );
-	//hits->clear();
-	//hits->shrink_to_fit();
-	//hits->reserve(shapes.size());
-	//hits->clear();
 }
 
 void ShapeList::updateBoundingBox( void )
@@ -127,11 +88,11 @@ void ShapeList::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-	BoundingBox3D min;
+	this->_bBox = BoundingBox3D();
 	for (auto shape : shapes) {
-		min += shape->boundingBox();
+		shape->updateBoundingBox();
+		this->_bBox += shape->boundingBox();
 	}
-	this->_bBox = min;
 }
 
 void ShapeList::initOpenGL( void )
@@ -164,27 +125,18 @@ double AffineShape::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bou
 	//////////////////////////////////////////////////////////////////////////////////////
 	// Compute the intersection of the difference with the affinely deformed shape here //
 	//////////////////////////////////////////////////////////////////////////////////////
-
-	//double result = INFINITY;
-	RayShapeIntersectionInfo temp;
-
+	RayShapeIntersectionInfo info;
 	Ray3D local = this->getInverseMatrix() * ray;
-
 	double ratio = ray.direction.length() / local.direction.length();
-
 	local.direction = local.direction.unit();
 
-	double distance = _shape->intersect(local, temp, BoundingBox1D(), std::function< bool(double) >()) * ratio;
-	//if (rayDist >= 0 && !(rayDist == INFINITY))
-	//{
-	//	result = rayDist;
-	//}
+	double distance = _shape->intersect(local, info, BoundingBox1D(), std::function< bool(double) >()) * ratio;
+	if (distance == INFINITY) return INFINITY;
 
-	iInfo.position = this->getMatrix() * temp.position;
-	iInfo.material = temp.material;
-	iInfo.normal = (this->getNormalMatrix() * temp.normal).unit();
-	iInfo.texture = temp.texture;
-
+	iInfo.position = this->getMatrix() * info.position;
+	iInfo.material = info.material;
+	iInfo.normal = (this->getNormalMatrix() * info.normal).unit();
+	iInfo.texture = info.texture;
 	return distance;
 }
 
@@ -202,8 +154,8 @@ void AffineShape::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-	//TODO: acceleration
-	//this->_bBox = this->getMatrix() * _shape->boundingBox();
+	_shape->updateBoundingBox();
+	this->_bBox = this->getMatrix() * _shape->boundingBox();
 }
 
 void AffineShape::drawOpenGL( GLSLProgram * glslProgram ) const
@@ -233,7 +185,6 @@ double TriangleList::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bo
 		iInfo.normal = temp.normal;
 		iInfo.position = temp.position;
 		iInfo.texture = temp.texture;
-
 	}
 	return intersection;
 }

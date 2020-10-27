@@ -27,8 +27,6 @@ void Sphere::updateBoundingBox( void )
 	///////////////////////////////
 	// Set the _bBox object here //
 	///////////////////////////////
-		//TODO: acceleration
-
 	double xmax = this->center[0] + radius;
 	double ymax = this->center[1] + radius;
 	double zmax = this->center[2] + radius;
@@ -38,6 +36,7 @@ void Sphere::updateBoundingBox( void )
 	this->_bBox[0] = Point3D(xmin, ymin, zmin);
 	this->_bBox[1] = Point3D(xmax, ymax, zmax);
 }
+
 void Sphere::initOpenGL( void )
 {
 	///////////////////////////
@@ -72,22 +71,18 @@ double Sphere::intersect( Ray3D ray , RayShapeIntersectionInfo &iInfo , Bounding
 
 	if (distance == INFINITY) return INFINITY;
 
-	iInfo.position = ray(distance);
+	Point3D intersection = ray(distance);
+	iInfo.position = intersection;
 	iInfo.normal = (iInfo.position - this->center).unit();
 	iInfo.material = this->_material;
-	//Point3D intersection = ray.position + ray.direction * distance;
-	//iInfo.position = intersection;
-	//iInfo.normal = (intersection - this->center).unit();
-	//iInfo.material = this->_material;
 
-	// Texture mapping
-	/*float theta = atan2(-(intersection[2] - this->center[2]), intersection[0] - this->center[0]);
+	float theta = atan2(-(intersection[2] - this->center[2]), intersection[0] - this->center[0]);
 	float u = (theta + Pi) / (2.0 * Pi);
 	float gamma = acos(-(intersection[1] - this->center[1]) / this->radius);
 	float v = gamma / Pi;
 
 	iInfo.texture[0] = u;
-	iInfo.texture[1] = v;*/
+	iInfo.texture[1] = v;
 
 	return distance;
 }

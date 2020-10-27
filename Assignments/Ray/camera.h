@@ -44,6 +44,8 @@ namespace Ray
 
 		/** This function returns the ray that leaves the camera and goes through pixel (i,j) of the view plane */
 		Util::Ray3D getRay( int i , int j , int width , int height ) const;
+		Util::Ray3D getRayJitter( double i , double j , int width , int height ) const;
+
 	};
 
 	/** This operator writes the camera out to a stream. */
