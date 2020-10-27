@@ -60,38 +60,25 @@ namespace Util
 		///////////////////////////////////////////////////////////////
 		// Compute the intersection of a BoundingBox with a Ray here //
 		///////////////////////////////////////////////////////////////
-		//Point3D* p;
-		//p[0] = this->center - length / 2;
-		//p[1] = this->center + length / 2;
-		//TODO: acceleration
-
 		double tmin = -INFINITY, tmax = INFINITY;
-
 		for (int i = 0; i < Dim; i++) {
-			//std::cout << "calleddim" << std::endl;
-			double t1 = (_p[0][i] - ray.position[i])/ray.direction[i];
-			double t2 = (_p[1][i] - ray.position[i])/ray.direction[i];
-			tmin = std::max(tmin, std::min(t1, t2));
-			tmax = std::min(tmax, std::max(t1, t2));
+			double a = (ray.direction[i]) ? (this->_p[0][i] - ray.position[i]) / ray.direction[i] : -INFINITY;
+			double b = (ray.direction[i]) ? (this->_p[1][i] - ray.position[i]) / ray.direction[i] : INFINITY;
+			if (b == INFINITY && (ray.position[i] < this->_p[0][i] || ray.position[i] > this->_p[1][i])) {
+				BoundingBox1D miss;
+				return miss;
+			}
+			if (b < a) {
+				double temp = b; 
+				b = a; 
+				a = temp;
+			}
+			if (a > tmin) tmin = a;
+			if (b < tmax) tmax = b;
 		}
-			//std::cout << " " << std::endl;
-
-		//if (tmin <= 0 && tmax >= 0) {
-		//	std::cout << "1" << std::endl;
-		//	return BoundingBox<1>();
-		//}
- 		//if (tmax >= fmin(tmin, 0.0)) {
-			 std::cout << "2" << std::endl;
-			 BoundingBox1D temp;// = new BoundingBox<1>();
-			 temp[0] = Point1D(tmin);
-			 temp[1] = Point1D(tmax);//(ray.position + (ray.direction * tmin)).Length();
-			 return temp;
-			 //eturn (ray.direction * tmin).length();
-			//return BoundingBox<1>((ray.direction * tmin).length());
-			//return (ray.direction * tmin);
-		//} else {
-		//	std::cout << "3" << std::endl;
-		//	return BoundingBox<1>();
-		//}
+		BoundingBox1D range;
+		range[0] = Point1D(tmin - 0.000000001);
+		range[1] = Point1D(tmax + 0.000000001);
+		return range;
 	}
 }

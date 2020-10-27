@@ -398,7 +398,7 @@ namespace Util
 	template< unsigned int Dim >
 	double Plane< Dim >::operator() ( const Point< Dim > &p ) const
 	{
-		return Point< Dim >::Dot( normal , p ) + distance;
+		return Point< Dim >::Dot( normal , p ) - distance;
 	}
 
 	/////////
