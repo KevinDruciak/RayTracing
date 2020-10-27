@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1894.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;h1 id="ray-tracing"&gt;Ray Tracing&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;Kevin Druciak&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;Kdrucia1&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;Late Days: 4&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;MSVC / Visual Studio Community 2017 / Windows 10&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/kdrucia1.art/kdrucia1.art.2.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h3 id="implemented-features-"&gt;Implemented Features:&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;p&gt;Point, Spot, and Directional lights&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;p&gt;Texture mapping for triangles and spheres&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;p&gt;BVH acceleration&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;p&gt;jittered supersampling anti-aliasing&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;p&gt;soft shadows for point and spot lights&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h3 id="todo-"&gt;Todo:&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Constructive solid geometry&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Procedural texture mapping&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;bump mapping&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;camera lens simulation&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;ray intersection acceleration with octree&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Box, Cylinder, Cone, Torus implementations&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h3 id="sample-output-"&gt;Sample Output:&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/directional.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in test.directional.ray --out directional.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">test.directional.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 0.0114883 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 2.20595 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 526,967 (2.10787 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 756,653 (1.43586 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 2,312,753 (4.3888 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/point.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in test.point.ray --out point.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">test.point.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 0.0127583 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 2.23339 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 528,076 (2.1123 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 738,861 (1.39916 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 2,290,877 (4.33816 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/spot.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in test.spot.ray --out spot.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">test.spot.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 0.0135994 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 2.2596 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 528,076 (2.1123 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 738,861 (1.39916 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 2,290,877 (4.33816 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/dog.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in dog.ray --out dog.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">dog.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 0.0264192 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 43.5783 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3222</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,683,980 (2.43957 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 11,372,632 (2.42798 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 74,774,375 (15.9639 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/bunny.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in bunny.ray --out bunny.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">bunny.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.21999 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 42.8978 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 208,578</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 3,635,506 (1.89349 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 11,086,808 (3.04959 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 115,441,322 (31.7539 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/dragon.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in dragon.ray --out dragon.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">dragon.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 2.84845 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 38.6647 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 500,002</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,018,418 (2.09293 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 9,174,521 (2.28312 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 104,183,600 (25.9265 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/buddha.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in buddha.ray --out buddha.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">buddha.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 4.77904 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 63.9628 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 868,330</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,378,822 (2.28064 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 13,499,055 (3.08281 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 186,332,830 (42.5532 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/gargoyle.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in gargoyle.ray --out gargoyle.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">gargoyle.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 9.66921 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 89.2303 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 1,744,876</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,160,085 (2.16671 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 16,181,222 (3.88964 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 272,897,704 (65.5991 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/nefertiti.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in nefertiti.ray --out nefertiti.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">nefertiti.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 11.1818 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 51.6868 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 2,018,234</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,247,604 (2.21229 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 10,781,303 (2.53821 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 143,609,636 (33.8096 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/david.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../Assignments/Assignment2 --in david.ray --out david.bmp --width 1600 --height 1200 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">david.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 30.8865 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 102.168 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 1600 x 1200</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 5,269,880</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 4,547,243 (2.36836 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 17,966,976 (3.95118 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 304,583,286 (66.982 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/kdrucia1.art/kdrucia1.art.2.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;../../Assignments/Assignment2 --in scene.ray --out scene.bmp --width 4000 --height 3000 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">scene.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.92873 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 978.297 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 4000 x 3000</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 34</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 73,873,725 (6.15614 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 162,421,928 (2.19864 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 2,665,620,389 (36.0835 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h3 id="jittered-supersampling-and-soft-shadows"&gt;Jittered Supersampling and Soft Shadows&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;These features are &lt;strong&gt;extremely&lt;/strong&gt; costly. I implemented them naively as a proof of concept. The read and ray trace times are also much lower than they should be here because I decided to run these commands on a more powerful computer. &lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="jittered-supersampling-"&gt;Jittered Supersampling:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/original.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;C:\Users\kevin\Desktop\Assignments\kdrucia1.art&amp;gt;..\Assignment2.exe --in earth.ray --out original.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.00001 --jitter 1 --sr 0 --radius 0</span></p>
+<p class="p1"><span class="s1">earth.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.51397 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 0.536589 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 745,858 (2.98343 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 1,319,850 (1.76957 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 3,510,741 (4.70698 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/jitter.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;C:\Users\kevin\Desktop\Assignments\kdrucia1.art&amp;gt;..\Assignment2.exe --in earth.ray --out jitter.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.00001 --jitter 50 --sr 5 --radius 0</span></p>
+<p class="p1"><span class="s1">earth.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.51546 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 27.6719 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 37,291,649 (149.167 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 65,990,820 (1.76959 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 175,530,785 (4.70697 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/jitter100.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;C:\Users\kevin\Desktop\Assignments\kdrucia1.art&amp;gt;..\Assignment2.exe --in earth.ray --out jitter100.bmp --width 500 --height 500 --rLimit 5 --cutOff 0.00001 --jitter 100 --sr 1 --radius 0</span></p>
+<p class="p1"><span class="s1">earth.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.51752 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 54.7321 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 74,585,857 (298.343 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 131,988,099 (1.76961 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 351,075,987 (4.707 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="soft-shadows-"&gt;Soft Shadows:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;&lt;img src="kdrucia1_HTML/soft.bmp" alt="1"&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;..\Assignment.exe --in earth.ray --out soft --width 500 --height 500 --rLimit 5 --cutOff 0.0001 --jitter 1 -- sr 0 --radius 10</span></p>
+<p class="p1"><span class="s1">scene.ray</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Read: 1.52379 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Ray-traced: 60.4559 seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Pixels: 500 x 500</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitives: 3</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Rays: 76,376,162 (305.505 rays/pixel)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Primitive intersections: 192,947,381 (2.52628 intersections/ray)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Bounding-box intersections: 422,021,694 (5.52557 intersections/ray)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h2 id="notes-on-implementation-"&gt;Notes on implementation:&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="new-command-line-parameters-"&gt;New Command Line Parameters:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;h5 id="-jitter"&gt;--jitter&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;the number of samples to average in jitter supersampling&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;h5 id="-sr"&gt;--sr&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;the radius of the jittering samples&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;h5 id="-radius"&gt;--radius&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;the radius of the light sampling for soft shadows&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="modified-non-todo-files-"&gt;Modified non-todo files:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;camera.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;added method getRayJitter for jittered supersampling functionality&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;directionaLlight.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;modified transparency header to match modified light.h&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;light.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;modified virtual transparency header&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;pointLight.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;modified transparency header to match modified light.h&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;scene.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;modified getColor to support radius&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;spotLight.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;modified transparency header to match modified light.h&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;triangle.h&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;added private fields for pre-computation of values independent of the ray&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;window.cpp&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;added --jitter and --radius command line options&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;main2.cpp&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;added --jitter and --radius command line options&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="art-submission-"&gt;Art Submission:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;h5 id="kdrucia1-art-2-bmp"&gt;kdrucia1.art.2.bmp&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;&lt;h5 id="kdrucia1-art-ray-included-ray-files"&gt;kdrucia1.art.ray + included ray files&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h4 id="known-bugs-"&gt;Known Bugs:&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1">&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Directional light does not draw shadows if any element in the position vector is 0. It works if we add some epsilon to those zeros.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;There is noticable artifacting in the larger models. I assume this is because of floating point errors.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Bounding box intersection collides with whole box, not just front faces and is thus slower. This also means that I have about twice as many bounding box intersections than ideal.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;I cast more rays than in the examples. I assume this has to do poorly-defined termination criteria for recursion.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;li&gt;Dog looks atrocious.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/ul&gt;</span></p>
+</body>
+</html>
